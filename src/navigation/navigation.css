@@ -1,0 +1,9 @@
+ul {
+    display: flex;
+    justify-content: center;
+    background-color: gray;
+}
+
+div{
+    margin-right: 20px;
+}
