@@ -1,17 +1,23 @@
 import { useState } from "react";
 
 export const Register = () => {
-  const [userDetails, setUserDetails] = useState({
+  const initialState = {
     firstName: "",
     lastName: "",
     email: "",
     password: "",
-  });
+  };
+
+  const [userDetails, setUserDetails] = useState(initialState);
 
   const hanldleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
     setUserDetails({ ...userDetails, [name]: value });
+  };
+
+  const handleReset = () => {
+    setUserDetails(initialState);
   };
 
   const handleSave = () => {
@@ -31,7 +37,7 @@ export const Register = () => {
 
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
-      <form style={{ width: "25%" }}>
+      <form  style={{ width: "25%" }}>
         <div>
           <label for="fname">First Name:</label>
           <input
@@ -73,8 +79,12 @@ export const Register = () => {
           />
         </div>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <button>Cancel</button>
-          <button onClick={handleSave}>Submit</button>
+          <button type="button" onClick={handleReset}>
+            Reset
+          </button>
+          <button type="button" onClick={handleSave}>
+            Submit
+          </button>
         </div>
       </form>
     </div>
