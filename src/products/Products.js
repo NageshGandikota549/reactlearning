@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./Products.css";
-
+import { FilterSection } from "./FilterSection";
 export const Products = () => {
   const [products, setProducts] = useState([]);
   const [filter, setFilter] = useState({
@@ -8,58 +8,43 @@ export const Products = () => {
     perpage: 15,
     sortOrder: "desc",
   });
+  const [url, setUrl] = useState("");
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    fetch(`https://fakestoreapi.com/products?limit=${filter.perpage}`)
+    setUrl(`https://fakestoreapi.com/products/category/${filter.category}`);
+  }, [filter.category]);
+
+  useEffect(() => {
+    setUrl(
+      `https://fakestoreapi.com/products?limit=${filter.perpage}&sort=${filter.sortOrder}`
+    );
+  }, [filter.perpage, filter.sortOrder]);
+
+  useEffect(() => {
+    fetch(url)
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
+        if (categories.length === 0) {
+          setCategories(data.map((x) => x.category));
+        }
       });
-  }, [filter.perpage]);
+  }, [categories.length, url]);
 
   const handleSelct = (type, value) => {
     setFilter({ ...filter, [type]: value });
   };
 
-  const categories = products.map((x) => x.category) ?? [];
+  const filterSectionProps = {
+    handleSelct: handleSelct,
+    categories: categories,
+    filter: filter,
+  };
 
   return (
     <>
-      <div style={{ display: "flex", justifyContent: "end" }}>
-        <div>
-          <select
-            onSelect={(event) => {
-              handleSelct("category", event.target.value);
-            }}
-          >
-            {[...new Set(categories)].map((category) => {
-              return <option value={category}>{category}</option>;
-            })}
-          </select>
-        </div>
-        <div>
-          <select
-            value={filter.perpage}
-            onSelect={(event) => {
-              handleSelct("perpage", event.target.value);
-            }}
-          >
-            <option value={"15"}>15</option>
-            <option value={"25"}>25</option>
-            <option value={"50"}>50</option>
-          </select>
-        </div>
-        <div>
-          <select
-            onSelect={(event) => {
-              handleSelct("sortOrder", event.target.value);
-            }}
-          >
-            <option value={"asc"}>Ascending</option>
-            <option value={"desc"}>Desceding</option>
-          </select>
-        </div>
-      </div>
+      <FilterSection {...filterSectionProps} />
       <div className="grid-container">
         {products.map((product) => {
           return (
