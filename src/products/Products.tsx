@@ -1,13 +1,24 @@
 import { useEffect, useState } from "react";
 import "./Products.css";
-import { FilterSection } from "./FilterSection";
-export const Products = () => {
-  const [products, setProducts] = useState([]);
-  const [filter, setFilter] = useState({
-    category: "",
-    perpage: 15,
-    sortOrder: "desc",
-  });
+import { FilterSection, IFilter } from "./FilterSection";
+
+export class Product {
+  id: number;
+  title: string;
+  category: string;
+  price: number;
+  image: string;
+}
+
+export class Filter {
+  category: string = '';
+  perpage: number = 15;
+  sortOrder: string ='desc';
+}
+
+export const Products: React.FC = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [filter, setFilter] = useState<IFilter>(new Filter());
   const [url, setUrl] = useState("");
   const [categories, setCategories] = useState([]);
 

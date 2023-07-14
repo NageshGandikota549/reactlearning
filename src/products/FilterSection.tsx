@@ -1,4 +1,22 @@
-export const FilterSection = ({ handleSelct, categories, filter }) => {
+import React, { ReactElement } from "react";
+
+export interface IFilter {
+  category: string;
+  perpage: number;
+  sortOrder: string;
+}
+
+export interface IFilterSection {
+  handleSelct: (key: string, value: string) => void;
+  categories: string[];
+  filter: IFilter;
+}
+
+export const FilterSection: React.FC<IFilterSection> = ({
+  handleSelct,
+  categories,
+  filter,
+}): ReactElement => {
   return (
     <div style={{ display: "flex", justifyContent: "end" }}>
       <div>
