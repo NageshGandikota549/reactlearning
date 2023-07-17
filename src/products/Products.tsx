@@ -1,19 +1,19 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import "./Products.css";
-import { FilterSection, IFilter } from "./FilterSection";
+import FilterSection, { IFilter } from "./FilterSection";
 
 export class Product {
   id: number = 0;
-  title: string ='';
-  category: string = '';
+  title: string = "";
+  category: string = "";
   price: number = 0;
-  image: string = '';
+  image: string = "";
 }
 
 export class Filter {
-  category: string = '';
+  category: string = "";
   perpage: number = 15;
-  sortOrder: string ='desc';
+  sortOrder: string = "desc";
 }
 
 export const Products: React.FC = () => {
@@ -37,15 +37,18 @@ export const Products: React.FC = () => {
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
-        if (categories.length === 0) {
-          setCategories(data.map((x: Product) => x.category));
-        }
+
+        const allCategories = data.map((x: Product) => x.category);
+        const uniqueValues = allCategories.filter(
+          (x: string, idx: number) => allCategories.indexOf(x) === idx
+        );
+        if (categories.length === 0) setCategories(uniqueValues);
       });
   }, [categories.length, url]);
 
-  const handleSelct = (type:string, value:string) => {
-    setFilter({ ...filter, [type]: value });
-  };
+  const handleSelct = useCallback((type: string, value: string) => {
+    setFilter((prev) => ({ ...prev, [type]: value }));
+  }, []);
 
   const filterSectionProps = {
     handleSelct: handleSelct,

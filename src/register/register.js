@@ -39,7 +39,7 @@ export const Register = () => {
     <div style={{ display: "flex", justifyContent: "center" }}>
       <form  style={{ width: "25%" }}>
         <div>
-          <label for="fname">First Name:</label>
+          <label for="fname">First Name:{ userDetails.firstName}</label>
           <input
             type="text"
             value={userDetails.firstName}

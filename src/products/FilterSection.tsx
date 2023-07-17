@@ -17,6 +17,8 @@ export const FilterSection: React.FC<IFilterSection> = ({
   categories,
   filter,
 }): ReactElement => {
+  console.log("rerendered");
+
   return (
     <div style={{ display: "flex", justifyContent: "end" }}>
       <div>
@@ -55,3 +57,5 @@ export const FilterSection: React.FC<IFilterSection> = ({
     </div>
   );
 };
+
+export default React.memo(FilterSection);
