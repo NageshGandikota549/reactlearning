@@ -27,12 +27,6 @@ export const Products: React.FC = () => {
   useEffect(() => {
     setUrl(`https://fakestoreapi.com/products/category/${filter.category}`);
   }, [filter.category]);
-  // Updating
-  useEffect(() => {
-    setUrl(
-      `https://fakestoreapi.com/products?limit=${filter.perpage}&sort=${filter.sortOrder}`
-    );
-  }, [filter.perpage, filter.sortOrder]);
 
   // LifeCycle methods - Component Mounting, Updating, Unmounting
 
@@ -40,6 +34,20 @@ export const Products: React.FC = () => {
   useEffect(() => {
     inputRef.current?.focus();
     // if (inputRef.current) inputRef.current.style.backgroundColor = "red";
+  }, []);
+
+  // Updating
+  useEffect(() => {
+    setUrl(
+      `https://fakestoreapi.com/products?limit=${filter.perpage}&sort=${filter.sortOrder}`
+    );
+  }, [filter.perpage, filter.sortOrder]);
+
+  // Unmounting
+  useEffect(() => {
+    return () => {
+      // clean
+    };
   }, []);
 
   useEffect(() => {
