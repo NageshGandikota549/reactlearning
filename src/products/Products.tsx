@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import "./Products.css";
 import FilterSection, { IFilter } from "./FilterSection";
 
@@ -51,10 +51,13 @@ export const Products: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    console.log(url,'url');
+    
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
+        console.log("data", data);
 
         const allCategories = data.map((x: Product) => x.category);
         const uniqueValues = allCategories.filter(
