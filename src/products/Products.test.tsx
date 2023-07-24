@@ -1,7 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import { Product, Products } from "./Products";
-import fetchMock from "jest-fetch-mock";
+import "@testing-library/jest-dom";
+import httpMock from "../httpMock";
 
 const mockProducts: Product[] = [
   {
@@ -20,29 +21,37 @@ const mockProducts: Product[] = [
   },
 ];
 
-// Mock the API fetch call
 beforeEach(() => {
-  fetchMock.enableMocks();
-  // if you have an existing `beforeEach` just add the following lines to it
-  fetchMock.mockIf(
-    (request: Request) => request.url.includes("products"),
-    JSON.stringify(mockProducts)
-  );
-});
+    httpMock.mockGet('products', mockProducts);
+})
 
-describe("Products Component", () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
+afterEach(() => {
+    httpMock.clearMocks();
+})
 
-  test("renders products correctly", async () => {
+
+describe("Product Component", () => {
+  it("should show `Filter Date` Text", async () => {
+    //arrage
     render(<Products />);
 
-    // Wait for the products to be loaded
-    await screen.findByText("Product 1");
+    //act
+    const filterText = await screen.findByText("Filter Data");
 
-    // Check if products are rendered correctly
-    expect(screen.getByText("Product 1")).toBeInTheDocument();
-    expect(screen.getByText("Product 2")).toBeInTheDocument();
+    //assert
+    expect(filterText).toBeInTheDocument();
   });
+    
+    
+    it('Should Load the products', async() => {
+     
+        //arrange
+        render(<Products />);
+        
+        //act
+       const products = await screen.findAllByTestId("product-item");
+
+        //assert
+        expect(products.length).toBe(2)
+ })
 });

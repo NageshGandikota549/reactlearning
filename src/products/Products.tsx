@@ -51,8 +51,6 @@ export const Products: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    console.log(url,'url');
-    
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
@@ -88,6 +86,7 @@ export const Products: React.FC = () => {
 
   return (
     <>
+      <span>Filter Data</span>
       <FilterSection {...filterSectionProps} />
       <div>
         <input
@@ -103,7 +102,7 @@ export const Products: React.FC = () => {
       <div className="grid-container">
         {filteredProducts.map((product) => {
           return (
-            <div key={product.id}>
+            <div key={product.id} data-testid="product-item">
               <img
                 alt={product.title}
                 src={product.image}
