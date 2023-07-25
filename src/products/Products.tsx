@@ -20,11 +20,13 @@ export const Products: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [filter, setFilter] = useState<IFilter>(new Filter());
   const [url, setUrl] = useState("");
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<string[]>([]);
   const [searchText, setSearchText] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    console.log("calling?", filter.category);
+
     setUrl(`https://fakestoreapi.com/products/category/${filter.category}`);
   }, [filter.category]);
 
@@ -51,11 +53,21 @@ export const Products: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    console.log("uuu", url);
+
+    if (!url) {
+      return;
+    }
+    setProducts([]);
     fetch(url)
-      .then((res) => res.json())
+      .then((response) => {
+        return response.text();
+      })
       .then((data) => {
+        return data ? JSON.parse(data) : [];
+      })
+      .then((data: Product[]) => {
         setProducts(data);
-        console.log("data", data);
 
         const allCategories = data.map((x: Product) => x.category);
         const uniqueValues = allCategories.filter(
@@ -66,6 +78,8 @@ export const Products: React.FC = () => {
   }, [categories.length, url]);
 
   const handleSelct = useCallback((type: string, value: string) => {
+    console.log("vv", value);
+
     setFilter((prev) => ({ ...prev, [type]: value }));
   }, []);
 

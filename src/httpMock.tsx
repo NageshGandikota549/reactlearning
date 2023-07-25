@@ -18,6 +18,7 @@ class httpMock {
       const mock = this._mocks.find(
         (x) => x.method === method && url.toString().includes(x.url)
       );
+  
 
       if (mock)
         return new Promise((resolve) =>

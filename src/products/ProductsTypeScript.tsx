@@ -17,13 +17,11 @@ export const Products: React.FC = (): React.ReactElement => {
   let pin: undefined = undefined;
 
   const hanldeClick: MouseEventHandler<HTMLButtonElement> = (): void => {
-    console.log("button clicked");
   };
 
   const hanldeOnChange: ChangeEventHandler<HTMLInputElement> = (
     event: ChangeEvent<HTMLInputElement>
   ): void => {
-    console.log(event.target.value);
   };
 
   return (
